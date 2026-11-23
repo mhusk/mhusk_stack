@@ -7,7 +7,7 @@ RULES_SRC="${REPO_ROOT}/AGENTS.md"
 MANAGED_MARKER=".mhusk_stack_managed"
 
 HARNESS="all"
-MODE="symlink"
+MODE="auto"
 CHECK_ONLY=0
 TARGET_HOME="${HOME}"
 
@@ -19,7 +19,8 @@ Install mhusk_stack skills and rules into supported agent harnesses.
 
 Options:
   --harness <all|antigravity|cursor|grok>  Target harness (default: all)
-  --mode <symlink|copy>                    Install mode (default: symlink)
+  --mode <auto|symlink|copy>               Install mode (default: auto; uses copy for Cursor
+                                           so Cloud Agent skill sync works, symlink elsewhere)
   --check                                  Read-only check of installed targets
   --home <dir>                             Override target home directory (default: $HOME)
   -h, --help                               Show this help message
@@ -65,12 +66,24 @@ case "$HARNESS" in
 esac
 
 case "$MODE" in
-  symlink|copy) ;;
+  auto|symlink|copy) ;;
   *)
-    printf 'Invalid --mode value: %s (expected: symlink, copy)\n' "$MODE" >&2
+    printf 'Invalid --mode value: %s (expected: auto, symlink, copy)\n' "$MODE" >&2
     exit 2
     ;;
 esac
+
+effective_mode_for_path() {
+  local path="$1"
+  if [ "$MODE" != "auto" ]; then
+    printf '%s' "$MODE"
+    return 0
+  fi
+  case "$path" in
+    */.cursor/*|*/.agents/*) printf 'copy' ;;
+    *) printf 'symlink' ;;
+  esac
+}
 
 if [ ! -d "$SKILLS_SRC" ]; then
   printf 'Error: skills directory not found at %s\n' "$SKILLS_SRC" >&2
@@ -158,10 +171,12 @@ check_plugin_manifest() {
 install_skill() {
   local src="$1"
   local dst="$2"
+  local op_mode
+  op_mode="$(effective_mode_for_path "$dst")"
 
   mkdir -p "$(dirname "$dst")" || return 1
 
-  if [ "$MODE" = "symlink" ]; then
+  if [ "$op_mode" = "symlink" ]; then
     if [ -L "$dst" ]; then
       rm -f "$dst" || return 1
     elif [ -d "$dst" ]; then
@@ -200,10 +215,12 @@ install_skill() {
 install_rule() {
   local src="$1"
   local dst="$2"
+  local op_mode
+  op_mode="$(effective_mode_for_path "$dst")"
 
   mkdir -p "$(dirname "$dst")" || return 1
 
-  if [ "$MODE" = "symlink" ]; then
+  if [ "$op_mode" = "symlink" ]; then
     if [ -L "$dst" ]; then
       rm -f "$dst" || return 1
     elif [ -e "$dst" ]; then

@@ -1,7 +1,7 @@
 # Implementation Plan: `mhusk_stack` Portable Context Stack
 
 - **Date:** 2026-11-23
-- **Status:** In Progress
+- **Status:** Complete
 - **Scope:** Google Antigravity, Cursor Desktop, Cursor Cloud Agents, GrokBot
 
 ## Goal
@@ -34,13 +34,13 @@ Build and publish `mhusk_stack` as a clean, public-safe GitHub repository of por
 
 ### Phase 5: Per-Harness Live Verification & Troubleshooting
 - [x] 5A — Google Antigravity passes 3-prompt smoke matrix.
-- [ ] 5B — Cursor Desktop passes 3-prompt smoke matrix.
-- [ ] 5C — Cursor Cloud Agents passes 3-prompt smoke matrix.
-- [ ] 5D — GrokBot passes 3-prompt smoke matrix.
+- [x] 5B — Cursor Desktop passes 3-prompt smoke matrix.
+- [x] 5C — Cursor Cloud Agents passes 3-prompt smoke matrix.
+- [x] 5D — GrokBot passes 3-prompt smoke matrix.
 - **Validation Gate 5:** All 4 harnesses verified and any harness quirks/workarounds documented.
 
 ### Phase 6: Update Docs & Publish Readiness
-- [ ] Update `docs/HARNESS_SETUP.md` with verified paths and troubleshooting notes from Phase 5.
-- [ ] Update root `README.md` with quickstart, compatibility matrix, and links.
-- [ ] Mark all plan checkboxes complete and confirm CI passes on GitHub.
+- [x] Update `docs/HARNESS_SETUP.md` with verified paths and troubleshooting notes from Phase 5.
+- [x] Update root `README.md` with quickstart, compatibility matrix, and links.
+- [x] Mark all plan checkboxes complete and confirm CI passes on GitHub.
 - **Validation Gate 6:** `./scripts/validate.sh` exits `0`, full tree public-hygiene check passes.

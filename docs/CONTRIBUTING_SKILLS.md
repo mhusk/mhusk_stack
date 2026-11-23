@@ -40,9 +40,9 @@ Concise, actionable, step-by-step workflow instructions.
 ```
 
 ### Authoring Guidelines
-1. **Write a crisp `description`:** Harnesses use progressive disclosure—only `name` and `description` are loaded upfront. Make trigger conditions unambiguous so the skill activates when needed and stays quiet otherwise.
-2. **Keep `SKILL.md` lean:** Aim for `< 16 KB` (ideally 50–200 lines). Move large templates, schemas, or reference tables into `references/` and link them with relative paths (e.g., `[plan-template.md](./references/plan-template.md)`).
-3. **Make helper scripts portable:** Prefer pure `bash` + standard POSIX tools (`awk`, `grep`, `find`, `wc`) over `/usr/bin/python3` (which on macOS invokes an `xcode-select` shim that can fail inside strict agent sandboxes). Resolve paths relative to the script directory (`SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"`), and set `chmod +x`.
+1. **Write a crisp, collision-free `description`:** Harnesses use progressive disclosure—only `name` and `description` are loaded upfront. Make trigger conditions unambiguous and avoid generic phrases that collide with real app or infrastructure workflows (for example, `mhusk-ping` is much cleaner than `"ping my stack"` in harnesses that monitor live servers).
+2. **Keep `SKILL.md` lean and self-contained:** Aim for `< 16 KB` (ideally 50–200 lines). Move large templates, schemas, or reference tables into `references/` and link them with relative paths (e.g., `` `[plan-template.md](./references/plan-template.md)` ``). Pure Markdown skills (`SKILL.md` + `references/`) work across all four harnesses, including cloud plugin sandboxes like Grok Bot.
+3. **Treat `scripts/` as optional accelerators with a fallback:** Prefer pure `bash` + standard POSIX tools (`awk`, `grep`, `find`, `wc`) over `/usr/bin/python3` (which on macOS invokes an `xcode-select` shim that can fail inside strict agent sandboxes). Resolve paths relative to the script directory (`SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"`), set `chmod +x`, and include a clean fallback instruction for harnesses (like Grok Bot) where plugin files are readable but not mounted on the shell filesystem.
 4. **Build in validation steps:** Every procedural skill should tell the agent how to verify its own output before declaring completion.
 5. **Avoid duplicating generic knowledge:** Focus on your concrete workflow, conventions, and guardrails rather than explaining basic language/tool usage.
 
@@ -59,21 +59,26 @@ Put personal or machine-specific overrides in gitignored local files (`AGENTS.lo
 
 ---
 
-## 4. Workflow for Adding a New Skill
+## 4. Workflow for Adding or Updating a Skill
 
-1. **Create the skill folder:** `skills/<skill-name>/SKILL.md` (+ optional `scripts/`, `references/`).
-2. **Validate statically:**
+1. **Create or edit the skill folder:** `skills/<skill-name>/SKILL.md` (+ optional `scripts/`, `references/`).
+2. **If you also edited `AGENTS.md`, sync the Cursor rule:**
+   ```bash
+   ./scripts/sync-rules.sh
+   ```
+3. **Validate statically:**
    ```bash
    ./scripts/validate.sh
    ```
-3. **Install / refresh harness links:**
+4. **Install / refresh harness links and copies:**
    ```bash
    ./scripts/install.sh
    ./scripts/install.sh --check
    ```
-4. **Live-test in a fresh agent session:**
-   - Start a new conversation in your target harness(es).
+   *(Default `--mode auto` updates symlinks for Antigravity/Grok and copies for Cursor so Cursor's **Sync Skills for Cloud Agents** picks up your changes.)*
+5. **Live-test in a fresh agent session:**
+   - Start a new conversation (or brand-new Cloud Agent VM) in your target harness(es).
    - Send a natural prompt that matches the skill's `description` and confirm the agent activates the skill, reads `SKILL.md`, and follows its workflow.
    - Send an unrelated prompt and verify the skill does *not* false-trigger.
-5. **Update docs if needed:** Note any harness-specific quirks in [HARNESS_SETUP.md](./HARNESS_SETUP.md).
-6. **Commit & push:** GitHub Actions runs `./scripts/validate.sh` automatically on push and pull requests.
+6. **Update docs if needed:** Note any harness-specific quirks in [HARNESS_SETUP.md](./HARNESS_SETUP.md).
+7. **Commit & push:** GitHub Actions runs `./scripts/validate.sh` and tests `scripts/install.sh` automatically on push and pull requests.

@@ -1,6 +1,17 @@
 # mhusk_stack
 
-A portable, public-safe context stack of agent rules (`AGENTS.md`) and modular skills (`skills/*/SKILL.md`) designed to move seamlessly across **Google Antigravity**, **Cursor Desktop**, **Cursor Cloud Agents**, and **GrokBot**.
+A portable, public-safe context stack of agent rules (`AGENTS.md`, `rules/mhusk-stack.mdc`) and modular skills (`skills/*/SKILL.md`) verified across **Google Antigravity**, **Cursor Desktop**, **Cursor Cloud Agents**, and **GrokBot**.
+
+## Verified Harness Matrix
+
+| Harness | How `mhusk_stack` Loads | Rules (`AGENTS.md`) | Skills (`SKILL.md`) | Bundled `scripts/` |
+| :--- | :--- | :---: | :---: | :---: |
+| **Google Antigravity** | Local plugin bundle (`~/.gemini/config/plugins/mhusk_stack/`) via `install.sh` | ✅ Auto-loaded | ✅ Auto-discovered | ✅ Executable |
+| **Cursor Desktop (Local)** | Native Cursor Plugin (`.cursor-plugin/plugin.json` + `rules/mhusk-stack.mdc`) & `~/.cursor/skills/` | ✅ Auto-loaded across repos | ✅ Auto-discovered | ✅ Executable |
+| **Cursor Cloud Agents** | **Settings → Agents → Sync Skills for Cloud Agents** (requires `--mode copy`) + optional Cursor **User Rules** | ✅ Via User Rules or repo `AGENTS.md` | ✅ Synced automatically | ✅ Executable |
+| **GrokBot** | Native GitHub plugin import (`mhusk-stack@mhusk-mhusk-stack`) | ⚠️ Skills-only (add to bot instructions if needed) | ✅ Auto-discovered | ⚠️ Readable, not shell-mounted |
+
+See [docs/HARNESS_SETUP.md](./docs/HARNESS_SETUP.md) for verified paths, setup steps, and real-world troubleshooting notes for each harness.
 
 ## Quickstart
 
@@ -12,7 +23,15 @@ cd "$HOME/Code/mhusk_stack"
 ./scripts/install.sh --check
 ```
 
-For **Cursor Desktop & Cursor Cloud Agents** across *all* repos, import `mhusk/mhusk_stack` directly as a Cursor Plugin (via `.cursor-plugin/plugin.json` + `rules/mhusk-stack.mdc`), and/or enable **Settings → Agents → Sync Skills for Cloud Agents**. See [docs/HARNESS_SETUP.md](./docs/HARNESS_SETUP.md) for details and fallback Cloud VM bootstrap commands.
+- `scripts/install.sh` defaults to `--mode auto`: symlinks for Antigravity/Grok and real copies for Cursor (`~/.cursor/skills/`, `~/.agents/skills/`) so Cursor's **Sync Skills for Cloud Agents** syncs them automatically.
+- For **Cursor Desktop (across all local repos)** and **GrokBot**, also import `mhusk/mhusk_stack` as a plugin from GitHub.
+- After editing `AGENTS.md`, run `./scripts/sync-rules.sh` to keep `rules/mhusk-stack.mdc` in sync (`./scripts/validate.sh` enforces parity).
+
+## Smoke Test (Fresh Session)
+
+1. `mhusk-check` → confirms always-on rules loaded (`RULES_OK: mhusk_stack@0.1.0`).
+2. `mhusk-ping` → confirms progressive skill discovery (`SKILL_OK: stack-ping@0.1.0` + `SKILL_SCRIPT_OK` or `SCRIPT_UNMOUNTED`).
+3. `Help me plan adding a new feature to this repo` → confirms `implementation-plan-and-docs` asks clarifying questions before drafting a phased plan.
 
 ## Included Skills
 
@@ -23,10 +42,9 @@ For **Cursor Desktop & Cursor Cloud Agents** across *all* repos, import `mhusk/m
 
 ## Documentation
 
-- [docs/HARNESS_SETUP.md](./docs/HARNESS_SETUP.md) — Per-harness installation paths, 3-prompt smoke-test matrix, verification status, and troubleshooting notes.
+- [docs/HARNESS_SETUP.md](./docs/HARNESS_SETUP.md) — Per-harness setup, smoke-test matrix, and verified troubleshooting notes.
 - [docs/CONTRIBUTING_SKILLS.md](./docs/CONTRIBUTING_SKILLS.md) — Standards, public-safety checklist, and workflow for adding new skills.
-- [docs/plans/2026-11-23-mhusk-stack-setup.md](./docs/plans/2026-11-23-mhusk-stack-setup.md) — Phased implementation plan tracking the rollout of this repository.
-- [docs/plans/2026-11-23-skill-author.md](./docs/plans/2026-11-23-skill-author.md) — Draft plan for a `skill-author` skill. Not implemented yet.
+- [docs/plans/2026-11-23-mhusk-stack-setup.md](./docs/plans/2026-11-23-mhusk-stack-setup.md) — Completed phased implementation plan tracking this rollout.
 
 ## Local Overrides
 
