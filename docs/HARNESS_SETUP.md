@@ -74,7 +74,7 @@ Run these three prompts in a **fresh session** per harness after installation:
 - **Verified results:**
   - Prompt 1 (`mhusk-check`): Passed (`RULES_OK: mhusk_stack@0.1.0`).
   - Prompt 2 (`ping my stack`): Passed (`SKILL_OK: stack-ping@0.1.0` + `SKILL_SCRIPT_OK`).
-  - Skill discovery: Both `stack-ping` and `implementation-plan-and-docs` discovered automatically under `$HOME/.gemini/config/plugins/mhusk_stack/skills/`.
+  - Skill discovery: `stack-ping`, `implementation-plan-and-docs`, and `skill-author` (`SKILL_OK: skill-author@0.1.0`) discovered automatically under `$HOME/.gemini/config/plugins/mhusk_stack/skills/`.
 - **Gotchas & Fixes Found:**
   - **Standalone rules vs. plugin bundle:** Symlinking plain `AGENTS.md` to `$HOME/.gemini/config/rules/mhusk_stack.md` did *not* auto-load because standalone rule files require `trigger: always_on` YAML frontmatter. Installing `mhusk_stack` as a native plugin bundle (`$HOME/.gemini/config/plugins/mhusk_stack/` with `plugin.json`, `rules/AGENTS.md`, and `skills/`) loads plain `AGENTS.md` cleanly with zero frontmatter changes and deduplicates automatically by resolved symlink path.
   - **macOS sandbox `/usr/bin/python3` shim:** Inside strict macOS sandboxes, `/usr/bin/python3` invokes `xcode-select` and can fail with `Operation not permitted`. Keep helper scripts (`validate.sh`, `install.sh`, `check.sh`) in pure `bash` + POSIX utilities (`awk`, `grep`, `find`, `wc`).

@@ -61,6 +61,8 @@ Put personal or machine-specific overrides in gitignored local files (`AGENTS.lo
 
 ## 4. Workflow for Adding or Updating a Skill
 
+> **Tip:** You can ask any harness to run the [skill-author](../skills/skill-author/SKILL.md) skill (e.g., *"Add a new skill to mhusk_stack"* or *"Save this pattern to mhusk_stack"*) to execute this entire flow—even while working in another repository or GrokBot.
+
 1. **Create or edit the skill folder:** `skills/<skill-name>/SKILL.md` (+ optional `scripts/`, `references/`).
 2. **If you also edited `AGENTS.md`, sync the Cursor rule:**
    ```bash

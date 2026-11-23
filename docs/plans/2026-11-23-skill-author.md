@@ -1,8 +1,8 @@
 # Implementation Plan: `skill-author`
 
 - **Date:** 2026-11-23
-- **Status:** Draft
-- **Scope:** New skill `skills/skill-author/`. Live checks on Google Antigravity, Cursor Desktop, Cursor Cloud Agents, and GrokBot.
+- **Status:** In Progress
+- **Scope:** New skill `skills/skill-author/` (including updating `mhusk_stack` from any local repo or cloud harness). Live checks on Google Antigravity, Cursor Desktop, Cursor Cloud Agents, and GrokBot.
 
 ## Goal
 
@@ -27,10 +27,10 @@ Add a portable `skill-author` skill that walks an agent through creating one new
 
 **Changes:**
 
-- [ ] Create `skills/skill-author/SKILL.md` with `name: skill-author` and a description that names concrete triggers: add a skill, author a `SKILL.md`, make a skill pass `./scripts/validate.sh`.
-- [ ] Keep the body procedural and under 16 KB. Steps cover: read [docs/CONTRIBUTING_SKILLS.md](../CONTRIBUTING_SKILLS.md), confirm the skill name, write `skills/<name>/SKILL.md` (optional `scripts/` and `references/` only if the workflow needs them), run `./scripts/validate.sh`, refresh with `./scripts/install.sh` and `./scripts/install.sh --check`, then state the live trigger prompt and the non-trigger prompt for a fresh session.
-- [ ] Tell the agent to reply with `SKILL_OK: skill-author@0.1.0` and the exact `SKILL.md` path it read, then continue the authoring steps.
-- [ ] Use only relative links and `$HOME` paths. No personal paths, emails, or secrets.
+- [x] Create `skills/skill-author/SKILL.md` with `name: skill-author` and a description that names concrete triggers: add a skill, author a `SKILL.md`, make a skill pass `./scripts/validate.sh`.
+- [x] Keep the body procedural and under 16 KB. Steps cover: read [docs/CONTRIBUTING_SKILLS.md](../CONTRIBUTING_SKILLS.md), confirm the skill name, write `skills/<name>/SKILL.md` (optional `scripts/` and `references/` only if the workflow needs them), run `./scripts/validate.sh`, refresh with `./scripts/install.sh` and `./scripts/install.sh --check`, then state the live trigger prompt and the non-trigger prompt for a fresh session.
+- [x] Tell the agent to reply with `SKILL_OK: skill-author@0.1.0` and the exact `SKILL.md` path it read, then continue the authoring steps.
+- [x] Use only relative links and `$HOME` paths. No personal paths, emails, or secrets.
 
 **Validation Gate 1:**
 
@@ -44,8 +44,8 @@ Add a portable `skill-author` skill that walks an agent through creating one new
 
 **Changes:**
 
-- [ ] Add `skill-author` to the skills table in `README.md` with a relative link to `skills/skill-author/SKILL.md`.
-- [ ] Add a one-line pointer in `docs/CONTRIBUTING_SKILLS.md` under "Workflow for Adding a New Skill" so agents and humans land on the same procedure.
+- [x] Add `skill-author` to the skills table in `README.md` with a relative link to `skills/skill-author/SKILL.md`.
+- [x] Add a one-line pointer in `docs/CONTRIBUTING_SKILLS.md` under "Workflow for Adding a New Skill" so agents and humans land on the same procedure.
 
 **Validation Gate 2:**
 
