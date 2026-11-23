@@ -9,8 +9,8 @@ This document tracks how `mhusk_stack` is installed, validated, and troubleshot 
 | Harness | Skills Path(s) | Rules Path(s) | Status |
 | :--- | :--- | :--- | :--- |
 | **Google Antigravity** | `$HOME/.gemini/config/plugins/mhusk_stack/skills/` (plugin bundle) | `$HOME/.gemini/config/plugins/mhusk_stack/rules/AGENTS.md`, repo `AGENTS.md` | **Verified** |
-| **Cursor Desktop** | `$HOME/.agents/skills/` and `$HOME/.cursor/skills/` | Repo `AGENTS.md` (and optional `.cursor/rules/*.mdc`) | Installed — ready for live check |
-| **Cursor Cloud Agents** | Cursor Personal Skills Sync and/or VM bootstrap (`install.sh --harness cursor --mode copy`) | Repo `AGENTS.md` | Ready for live check |
+| **Cursor Desktop** | Native Cursor Plugin (`mhusk/mhusk_stack`) and/or `$HOME/.agents/skills/` + `$HOME/.cursor/skills/` | Plugin `rules/mhusk-stack.mdc` (`alwaysApply: true`), repo `AGENTS.md` | In-repo verified; testing plugin across repos |
+| **Cursor Cloud Agents** | Native Cursor Plugin (`mhusk/mhusk_stack`) + Cursor **Sync Skills for Cloud Agents** (or VM bootstrap) | Plugin `rules/mhusk-stack.mdc` (`alwaysApply: true`), repo `AGENTS.md` | Ready for plugin test |
 | **GrokBot** | `$HOME/.grok/skills/` and `$HOME/.agents/skills/` | `$HOME/.grok/rules/mhusk_stack.md`, repo `AGENTS.md` | Installed — ready for live check |
 
 ---
@@ -32,12 +32,20 @@ Options:
 
 ---
 
-## Cursor Cloud Agents Setup
+## Cursor Cloud Agents & Cross-Repo Setup
 
-Cursor Cloud Agents run inside isolated cloud VMs without access to your local `$HOME`. Use either (or both):
+Cursor Cloud Agents run inside isolated cloud VMs without access to your local `$HOME` (so local `$HOME/.cursor/skills/` and `$HOME/.agents/skills/` are absent unless synced or installed via plugin/VM bootstrap).
 
-1. **Personal Skills Sync (recommended for personal skills):** Enable personal skill syncing in Cursor Settings so skills installed in `$HOME/.cursor/skills/` or `$HOME/.agents/skills/` sync to Cloud Agents.
-2. **Cloud VM Bootstrap Script:** In your Cursor Cloud Agent environment setup script, pull and install `mhusk_stack` in copy mode:
+Use the native Cursor Plugin flow (syncs **both** rules and skills across all repos and Cloud Agents):
+
+1. **Install as a Cursor Plugin from GitHub (recommended):**
+   - In Cursor, open **Settings → Plugins** (or the **Plugins / Customize** panel) and import from GitHub: `mhusk/mhusk_stack`.
+   - Cursor reads `.cursor-plugin/plugin.json` (and `.cursor-plugin/marketplace.json`), mounts `rules/mhusk-stack.mdc` (`alwaysApply: true`), and registers `skills/*/SKILL.md`.
+   - Whenever you edit `AGENTS.md`, run `./scripts/sync-rules.sh` before committing so `rules/mhusk-stack.mdc` stays identical (`./scripts/validate.sh` enforces this).
+2. **Enable Personal Skills Sync (optional, for local `~/.cursor/skills/`):**
+   - In Cursor, go to **Settings → Agents** and turn on **Sync Skills for Cloud Agents**.
+3. **Fallback — Cloud VM Bootstrap Script:**
+   In a Cursor Cloud Agent environment setup script (`.cursor/environment.json`), pull and install `mhusk_stack` in copy mode:
    ```bash
    git clone --depth 1 https://github.com/mhusk/mhusk_stack.git "$HOME/.mhusk_stack" \
      && "$HOME/.mhusk_stack/scripts/install.sh" --harness cursor --mode copy

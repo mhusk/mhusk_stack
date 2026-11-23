@@ -1,0 +1,8 @@
+{
+  "name": "mhusk-stack",
+  "displayName": "mhusk_stack",
+  "description": "Portable, public-safe agent engineering patterns and skills (implementation planning, docs workflow, and verification canary).",
+  "version": "0.1.0",
+  "repository": "https://github.com/mhusk/mhusk_stack",
+  "license": "MIT"
+}

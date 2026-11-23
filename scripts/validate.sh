@@ -209,7 +209,36 @@ if [ -d "${REPO_ROOT}/scripts" ]; then
   done
 fi
 
-# 5. Public hygiene scan across repository files
+# 5. Check Cursor plugin manifest & rule sync with AGENTS.md
+CURSOR_PLUGIN_JSON="${REPO_ROOT}/.cursor-plugin/plugin.json"
+CURSOR_MARKETPLACE_JSON="${REPO_ROOT}/.cursor-plugin/marketplace.json"
+CURSOR_MDC="${REPO_ROOT}/rules/mhusk-stack.mdc"
+
+if [ ! -f "$CURSOR_PLUGIN_JSON" ]; then
+  fail "Missing .cursor-plugin/plugin.json"
+fi
+if [ ! -f "$CURSOR_MARKETPLACE_JSON" ]; then
+  fail "Missing .cursor-plugin/marketplace.json"
+fi
+if [ ! -f "$CURSOR_MDC" ]; then
+  fail "Missing rules/mhusk-stack.mdc (run ./scripts/sync-rules.sh)"
+elif [ -f "$AGENTS_MD" ]; then
+  if ! grep -q '^alwaysApply: true$' "$CURSOR_MDC"; then
+    fail "rules/mhusk-stack.mdc must set 'alwaysApply: true' in frontmatter"
+  fi
+  mdc_body="$(awk '
+    NR == 1 && $0 == "---" { in_fm = 1; next }
+    in_fm && $0 == "---" { in_fm = 0; after_fm = 1; next }
+    after_fm == 1 && $0 == "" { after_fm = 2; next }
+    after_fm >= 1 { after_fm = 2; print }
+  ' "$CURSOR_MDC")"
+  agents_body="$(cat "$AGENTS_MD")"
+  if [ "$mdc_body" != "$agents_body" ]; then
+    fail "rules/mhusk-stack.mdc is out of sync with AGENTS.md (run ./scripts/sync-rules.sh)"
+  fi
+fi
+
+# 6. Public hygiene scan across repository files
 HYGIENE_REGEX='(/Users/[a-zA-Z0-9._-]+/|/home/[a-zA-Z0-9._-]+/|[A-Za-z0-9._%+-]+@(gmail|icloud|yahoo|hotmail)\.com|ghp_[A-Za-z0-9]{16,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16})'
 
 while IFS= read -r fpath; do

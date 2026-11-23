@@ -1,0 +1,13 @@
+{
+  "name": "mhusk-stack-marketplace",
+  "owner": {
+    "name": "mhusk"
+  },
+  "plugins": [
+    {
+      "name": "mhusk-stack",
+      "source": "./",
+      "description": "Portable, public-safe agent engineering patterns and skills (implementation planning, docs workflow, and verification canary)."
+    }
+  ]
+}
