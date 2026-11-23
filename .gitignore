@@ -1,0 +1,15 @@
+# Local/personal overrides (never publish)
+local/
+AGENTS.local.md
+GEMINI.local.md
+*.local.md
+
+# Generated bundles and temp artifacts
+dist/
+.tmp/
+
+# OS & editor clutter
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

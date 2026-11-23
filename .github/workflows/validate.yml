@@ -1,0 +1,28 @@
+name: Validate mhusk_stack
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run static validation
+        run: ./scripts/validate.sh
+
+      - name: Verify canary script
+        run: ./skills/stack-ping/scripts/check.sh
+
+      - name: Test installer in symlink and copy modes
+        run: |
+          tmp_home="$(mktemp -d)"
+          ./scripts/install.sh --home "$tmp_home"
+          ./scripts/install.sh --home "$tmp_home" --check
+          ./scripts/install.sh --home "$tmp_home" --mode copy
+          ./scripts/install.sh --home "$tmp_home" --check
+          rm -rf "$tmp_home"
