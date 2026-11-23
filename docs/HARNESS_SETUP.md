@@ -53,6 +53,21 @@ Use the native Cursor Plugin flow (syncs **both** rules and skills across all re
 
 ---
 
+## Updating `mhusk_stack` From Another Repo (`skill-author` Matrix)
+
+Because `skill-author` is a pure-Markdown skill, you can invoke it from **any** of the four harnesses—it simply adapts how edits, validation, and propagation work depending on whether the harness has local filesystem access or cloud GitHub access:
+
+| Harness (Starting in Another Repo) | Where Edits Happen | How Validation Runs | How Other Harnesses Get the Update | Manual Follow-Up Needed? |
+| :--- | :--- | :--- | :--- | :--- |
+| **Google Antigravity** | Local `$HOME/Code/mhusk_stack` *(1 permission prompt to edit outside current workspace)* | Runs `./scripts/validate.sh` + `./scripts/install.sh` locally | Antigravity & local Grok update immediately via symlinks; Cursor copies refresh via `install.sh`; pushing to `main` updates GrokBot + GitHub CI | Approve outside-workspace edit & push; toggle Cursor Cloud Sync if you want immediate Cloud Agent push |
+| **Cursor Desktop (Local)** | Local `$HOME/Code/mhusk_stack` | Runs `./scripts/validate.sh` + `./scripts/install.sh` locally | Same as Antigravity: local harnesses refresh immediately; pushing to `main` updates Cursor Plugin, GrokBot, and CI | Push to `main` (and refresh Cursor Cloud Sync if needed) |
+| **GrokBot** | GitHub branch / PR on `mhusk/mhusk_stack` via GitHub connector *(no local Mac access)* | GitHub Actions (`validate.yml`) runs `./scripts/validate.sh` + `install.sh` test on the PR/push | GrokBot sees updates once merged to `main` | On your Mac, run `git -C "$HOME/Code/mhusk_stack" pull && "$HOME/Code/mhusk_stack/scripts/install.sh"` |
+| **Cursor Cloud Agents** | Isolated VM for the current repo—opens a PR on `mhusk/mhusk_stack` if `gh`/GitHub auth is available, or prompts you to run a quick Cloud Agent on `mhusk/mhusk_stack` directly | GitHub Actions (`validate.yml`) on the PR/push (or `./scripts/validate.sh` if run inside a `mhusk_stack` Cloud Agent) | Cloud harnesses see updates once merged to `main` | Merge PR (if opened), then run `git -C "$HOME/Code/mhusk_stack" pull && "$HOME/Code/mhusk_stack/scripts/install.sh"` on your Mac |
+
+> **Rule of thumb:** Always edit the `mhusk_stack` git repo (locally or via GitHub PR)—never edit installed copies under `$HOME/.cursor/skills/`, `$HOME/.agents/skills/`, or `$HOME/.gemini/config/plugins/`.
+
+---
+
 ## 3-Prompt Smoke-Test Matrix
 
 Run these three prompts in a **fresh session** per harness after installation:
