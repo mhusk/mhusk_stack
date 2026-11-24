@@ -39,6 +39,7 @@ cd "$HOME/Code/mhusk_stack"
 | :--- | :--- |
 | [stack-ping](./skills/stack-ping/SKILL.md) | Canary skill + helper script to smoke-test skill discovery and execution in any harness. |
 | [implementation-plan-and-docs](./skills/implementation-plan-and-docs/SKILL.md) | Interactive Q&A → phased implementation plan with per-step validation gates → mandatory repo docs update. |
+| [codebase-refactor-audit](./skills/codebase-refactor-audit/SKILL.md) | Scoped 7-lens codebase audit → ranked chat report with triage gate → phased refactoring plan with strict safety nets and doc updates. |
 | [skill-author](./skills/skill-author/SKILL.md) | Add or update skills and rules in `mhusk_stack` from any local repository or cloud harness (with validation, rule sync, and install refresh). |
 
 ## Documentation
