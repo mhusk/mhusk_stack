@@ -14,3 +14,9 @@ For each primitive: what commonly breaks, and a smoke check. Examples are GCP-fl
 
 ## Propagation delays
 IAM and service-agent changes can take minutes to apply. Retry before assuming a misconfiguration, and record observed delays in the deployment guide.
+
+## Local Admin SDK / CLI credential overrides
+When working across multiple GCP or Firebase projects locally, remember:
+- `firebase login` authenticates the **Firebase CLI** only; Node/Python Admin SDKs (`firebase-admin`, `google-cloud-*`) read `GOOGLE_APPLICATION_CREDENTIALS` first and default `gcloud` ADC second.
+- If `GOOGLE_APPLICATION_CREDENTIALS` is exported in your shell for a different project, Admin SDK scripts fail with `7 PERMISSION_DENIED` even when `--project` or `.firebaserc` points to the right project.
+- **Fix:** Clear it inline (`GOOGLE_APPLICATION_CREDENTIALS= <command>`) to use default ADC (run `gcloud auth application-default login` if expired), or pass a short-lived token from `gcloud auth print-access-token` if the CLI supports an explicit token env var.

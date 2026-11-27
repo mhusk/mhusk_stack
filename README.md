@@ -42,6 +42,7 @@ cd "$HOME/Code/mhusk_stack"
 | [codebase-refactor-audit](./skills/codebase-refactor-audit/SKILL.md) | Scoped 7-lens codebase audit → ranked chat report with triage gate → phased refactoring plan with strict safety nets and doc updates. |
 | [cloud-deploy-gates](./skills/cloud-deploy-gates/SKILL.md) | Deploy-and-verify gate after each milestone that adds a cloud primitive (secrets, triggers, schedulers, signed URLs, new APIs) so IAM/service-agent failures surface early. |
 | [teach-me-the-codebase](./skills/teach-me-the-codebase/SKILL.md) | Repo concept/tech discovery → diagnostic quiz (chat or fillable file) → graded gap diagnosis and prioritized learning plan with hands-on exercises. |
+| [session-skill-retro](./skills/session-skill-retro/SKILL.md) | Review the current chat or a past session transcript against `mhusk_stack` → ranked candidate report with triage gate → hand off approved new skills, skill updates, or rules to `skill-author`. |
 | [skill-author](./skills/skill-author/SKILL.md) | Add or update skills and rules in `mhusk_stack` from any local repository or cloud harness (with validation, rule sync, and install refresh). |
 
 ## Documentation

@@ -4,9 +4,10 @@ description: >-
   Use when the user wants to add or update a skill (`SKILL.md`), add a standing
   rule (`AGENTS.md`), or save a reusable pattern into `mhusk_stack`—whether
   working inside `mhusk_stack`, from another local repository, or from a cloud
-  harness (GrokBot / Cursor Cloud Agents). Do not trigger for general project
-  feature planning (`implementation-plan-and-docs`) or canary pings
-  (`stack-ping`).
+  harness (GrokBot / Cursor Cloud Agents). Do not trigger for session/chat
+  retrospectives that first need to discover candidate skills
+  (`session-skill-retro`), general project feature planning
+  (`implementation-plan-and-docs`), or canary pings (`stack-ping`).
 ---
 
 # `mhusk_stack` Skill & Rule Authoring (From Anywhere)

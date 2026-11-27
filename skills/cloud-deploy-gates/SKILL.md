@@ -3,9 +3,10 @@ name: cloud-deploy-gates
 description: >-
   Use when planning, building, or debugging work that introduces cloud or hosted
   backend primitives (secrets, event triggers, scheduled jobs, storage/signed
-  URLs, new provider APIs or OAuth redirects). Adds a deploy-and-verify gate
-  after each milestone that adds a primitive, so IAM and service-agent failures
-  surface immediately instead of stacking up at the end.
+  URLs, new provider APIs, OAuth redirects, or local Admin SDK deploy/publish
+  scripts). Adds a deploy-and-verify gate after each milestone that adds a
+  primitive, so IAM and service-agent failures surface immediately instead of
+  stacking up at the end.
 ---
 
 # Deploy at Infrastructure Boundaries
@@ -23,6 +24,7 @@ Local emulators and unit tests do **not** validate cloud control-plane state: IA
 2. **Plan a deploy-and-verify gate right after that milestone**, not only in the final one. The live deploy plus a smoke check is the exit criterion for that boundary. Do not build the next infrastructure layer on top until it passes.
    - Catching one missing role or API on the step that introduces it takes minutes. Debugging four stacked IAM/service-agent failures at the end wastes hours.
 3. **If a gate fails**, root-cause it there. Check IAM, enabled APIs, and propagation delay (retry after a few minutes) before changing code.
+   - When a local Admin SDK or deploy/publish CLI fails with `PERMISSION_DENIED` across multiple GCP/Firebase projects, check whether `GOOGLE_APPLICATION_CREDENTIALS` is exported for another project—clear it inline (`GOOGLE_APPLICATION_CREDENTIALS= <cmd>`) to fall back to default `gcloud` ADC, or pass a fresh token from `gcloud auth print-access-token`.
 4. **Document immediately** every newly discovered IAM role, service agent, API, or propagation delay in the repo's deployment guide, so a fresh self-hosted install works first try.
 
 ## Validation
