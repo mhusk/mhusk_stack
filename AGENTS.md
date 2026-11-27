@@ -8,7 +8,7 @@ This repository (`mhusk_stack`) is a portable, public-safe collection of agent i
 2. **Small, validatable steps:** Break work into discrete phases where every phase has a concrete validation check (command, test, or observable behavior). Do not advance past a failing gate—root-cause and fix it in place.
 3. **Progressive disclosure:** Keep always-on instructions (`AGENTS.md`) concise. Put repeatable multi-step workflows in `skills/<name>/SKILL.md` and bulky templates/reference material in `references/`.
 4. **Leave docs better than you found them:** Whenever setup steps, gotchas, or architectural decisions change, update the relevant `docs/` or `README.md` in the same task so future onboarding is faster.
-5. **Public-safe by default:** Never commit personal paths (e.g., `/Users/<name>` or `/home/<name>`), emails, API keys, tokens, or internal/private references into this repository. Use `$HOME`, relative paths, and gitignored `local/` overlays for machine-specific preferences.
+5. **Public-safe by default:** Never commit personal paths (e.g., `/Users/<name>` or `/home/<name>`), emails, API keys, tokens, or internal/private references into this repository. Use `$HOME`, relative paths, and gitignored `local/` overlays for machine-specific preferences. In tests and fixtures, never hardcode literal strings matching real secret prefixes with Base64/hex suffixes (e.g., `whsec_<base64>`, `sk_...`); build realistic-format test fixtures dynamically at runtime to avoid secret-scanner false positives.
 
 ## Repository Map
 

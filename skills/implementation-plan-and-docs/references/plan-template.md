@@ -36,6 +36,13 @@
 
 ---
 
+### Penultimate Phase (Optional): Human-Guided Live Walkthrough
+**Changes:**
+- [ ] Walk through each user-facing and integration area live against the deployed app (one area at a time).
+- [ ] Fix any reported bugs with regression tests, verify CI passes, deploy, and confirm live before checking off the area.
+
+---
+
 ### Final Phase: Documentation & Onboarding Update
 **Changes:**
 - [ ] Update `README.md` or relevant `docs/` with verified setup commands and architecture notes.

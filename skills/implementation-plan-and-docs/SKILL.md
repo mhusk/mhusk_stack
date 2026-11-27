@@ -51,6 +51,7 @@ Use the structure in [plan-template.md](./references/plan-template.md).
 - **Concrete Validation Gate per phase:** Every phase ends with a runnable command, assertion, or observable check—never vague "verify it works."
 - **Troubleshooting / root-cause focus:** Call out likely failure modes or isolation checks when a phase touches external environments, permissions, or multiple tools.
 - **Deploy gates for cloud primitives:** If a phase introduces a cloud primitive (secrets, event triggers, scheduled jobs, storage/signed URLs, new provider APIs or OAuth config), end it with a live deploy-and-verify gate per [cloud-deploy-gates](../cloud-deploy-gates/SKILL.md) rather than deferring deployment to the last phase.
+- **Human-guided QA walkthrough before launch:** For user-facing apps or multi-integration systems, include a penultimate `[HUMAN]` walkthrough phase split into discrete functional areas—work one area at a time (report → fix + regression test → CI verify → deploy → confirm live → check off) to catch real-world browser, mobile, and cloud quirks emulators cannot reproduce.
 - **Mandatory final Docs Update phase:** Always include a final phase dedicated to updating `README.md` and `docs/` with verified commands, gotchas discovered during execution, and setup instructions so future onboarding is effortless.
 
 Pause for user sign-off on the plan before starting execution (unless the user explicitly asked to plan and execute immediately).
