@@ -74,7 +74,7 @@ Present the audit report **in chat first** using [audit-report-template.md](./re
 ## Step 5: Draft the Phased Refactor Plan (Approved Items Only)
 
 Once the user selects findings to execute, draft a phased plan using [refactor-plan-template.md](./references/refactor-plan-template.md):
-- **Plan location:** Default to `docs/plans/YYYY-MM-DD-refactor-<slug>.md` (and index it in `docs/README.md` if `docs/` exists). If the user asks for an ephemeral plan, keep it in chat/artifact only.
+- **Plan location:** Default to `docs/plans/YYYY-MM-DD-refactor-<slug>.md` for general structural or performance refactors (committable after secret-hygiene checks, and indexed in `docs/README.md` if `docs/` exists). When the approved plan includes security, vulnerability, or auth-hardening findings in a public repository, store it under a gitignored path such as `docs/plans/security/YYYY-MM-DD-<slug>.md` (or `*security*.md` / `*audit*.md`)—never add a blanket `docs/plans/` git ignore that hides feature plans. If the user asks for an ephemeral plan, keep it in chat/artifact only.
 - **Mandatory Phase 0 (Baseline Verification):** Record and run the existing test, lint, typecheck, and build commands *before* editing code. If the baseline is already red, stop and surface the pre-existing failures before refactoring.
 - **Small, revertible phases:** Group work into one finding (or tightly coupled cluster) per phase so any regression pinpoints the exact change.
 - **Safety-net tests first:** Whenever a phase refactors untested risky logic, include a sub-step to add characterization tests *before* changing the implementation.
@@ -96,7 +96,7 @@ When executing the approved plan:
    - Root-cause the failure in place before touching the next phase.
    - Fix and re-run until green (or revert the phase cleanly if blocked).
    - Note any non-obvious pitfall for the Final Docs Phase.
-5. Check off completed items in the plan file as each phase passes.
+5. Check off completed items in the plan file (and any root-level project tracker such as `IMPLEMENTATION_PLAN.md` if the repo maintains one) as each phase passes.
 
 ---
 

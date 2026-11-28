@@ -43,8 +43,9 @@ Use the structure in [plan-template.md](./references/plan-template.md).
 
 ### Plan Location
 1. Check `AGENTS.md` or existing repo conventions first.
-2. Default to `docs/plans/YYYY-MM-DD-<slug>.md` when the plan should live in the repository (and ensure `docs/README.md` indexes it if `docs/` exists).
-3. If the user asks for an ephemeral plan only, present it in chat/artifact without committing it.
+2. Default to `docs/plans/YYYY-MM-DD-<slug>.md` for feature, performance, and roadmap plans—these **should be committed to Git** after passing secret-hygiene checks (and indexed in `docs/README.md` if `docs/` exists).
+3. If a plan contains security audit, vulnerability, or sensitive hardening details in a public repo, store it under a gitignored path such as `docs/plans/security/YYYY-MM-DD-<slug>.md` (or `*security*.md` / `*audit*.md`)—**never** add a blanket `docs/plans/` git ignore that hides feature plans.
+4. If the user asks for an ephemeral plan only, present it in chat/artifact without committing it.
 
 ### Non-Negotiable Plan Qualities
 - **Small, isolated phases:** Each phase should deliver one testable slice (e.g., foundation → validator → core logic → integration → docs) so failures pinpoint the exact step that broke.
@@ -67,7 +68,8 @@ When executing the approved plan:
    - Root-cause the failure right there before touching the next phase.
    - Fix the issue and re-run the gate until it passes.
    - Capture any non-obvious pitfall (e.g., platform quirk, sandbox limitation, missing flag) as a note for the Docs Update phase.
-4. Check off completed items in the plan file as each phase passes.
+4. **Keep trackers synced per step:** State which plan file is active when starting or reporting a step. Check off completed items in the plan file as each phase passes—and when a repo maintains both a root-level project tracker (e.g., `IMPLEMENTATION_PLAN.md` or `ROADMAP.md`) and a dated plan under `docs/plans/`, update **both** in the same step/commit rather than waiting until the final phase.
+5. **User-gated validation handoff:** Whenever pausing between steps or phases for user validation, always state explicitly whether changes are **local only**, **deployed**, or **committed/pushed**, and include a concise copy-pasteable **How to Validate** block (exact commands to run + key defaults or behaviors to sanity-check).
 
 ---
 
